@@ -19,7 +19,7 @@ select t1.categoryid ,t1.categoryname
 FROM riso_dwd.riso_category  t1
 WHERE t1.level = '2'
 )
-
+33
 INSERT overwrite table riso_dw.riso_category
 SELECT 
 t4.categoryid as lev4id,
