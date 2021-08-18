@@ -15,11 +15,16 @@ FROM riso_dwd.riso_category  t1
 WHERE t1.level = '3'
 ),
 level2 as (
-select t1.categoryid ,t1.categoryname
+select t1.categoryid ,t1.categoryname,t1.parentid 
 FROM riso_dwd.riso_category  t1
 WHERE t1.level = '2'
+),
+level1 as (
+select t1.categoryid ,t1.categoryname
+FROM riso_dwd.riso_category  t1
+WHERE t1.level = '1'
 )
-33
+
 INSERT overwrite table riso_dw.riso_category
 SELECT 
 t4.categoryid as lev4id,
@@ -27,7 +32,10 @@ t4.categoryname as lev4name,
 t3.categoryid as lev3id,
 t3.categoryname as lev3name,
 t2.categoryid as lev2id,
-t2.categoryname as lev2name
+t2.categoryname as lev2name,
+t1.categoryid as lev1id,
+t1.categoryname as lev1name
 FROM level4 t4
 left join level3 t3 on t4.parentid = t3.categoryid
-left join level2 t2 on t3.parentid = t2.categoryid;
+left join level2 t2 on t3.parentid = t2.categoryid
+left join level1 t1 on t2.parentid = t1.categoryid;
